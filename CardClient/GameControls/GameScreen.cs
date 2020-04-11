@@ -51,10 +51,22 @@ namespace CardClient.GameControls
 
                     player_hand_controls[i].Add(game_card);
                     Controls.Add(game_card);
+                    game_card.Click += new System.EventHandler(this.onGameCardClick);
                 }
             }
 
             UpdateCardLocations();
+        }
+
+        public void onGameCardClick(object sender, EventArgs e)
+        {
+            if (sender is GameCard)
+            {
+                GameCard gc = (GameCard)sender;
+                Console.WriteLine(string.Format(
+                    "Card {0:s} clicked",
+                    gc.base_card.ToString()));
+            }
         }
 
         private int CardWidth()

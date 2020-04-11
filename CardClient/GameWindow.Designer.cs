@@ -31,7 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gameScreen1 = new CardClient.GameControls.GameScreen();
+            this.GameScreen = new CardClient.GameControls.GameScreen();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
@@ -62,16 +62,17 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // gameScreen1
+            // GameScreen
             // 
-            this.gameScreen1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.GameScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gameScreen1.BackColor = System.Drawing.Color.Green;
-            this.gameScreen1.Location = new System.Drawing.Point(0, 27);
-            this.gameScreen1.Name = "gameScreen1";
-            this.gameScreen1.Size = new System.Drawing.Size(956, 524);
-            this.gameScreen1.TabIndex = 1;
+            this.GameScreen.BackColor = System.Drawing.Color.Green;
+            this.GameScreen.Location = new System.Drawing.Point(0, 27);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.Size = new System.Drawing.Size(956, 524);
+            this.GameScreen.TabIndex = 1;
+            this.GameScreen.Click += new System.EventHandler(this.gameScreen1_Click);
             // 
             // statusStrip1
             // 
@@ -96,7 +97,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(956, 576);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.gameScreen1);
+            this.Controls.Add(this.GameScreen);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "GameWindow";
@@ -115,7 +116,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private GameControls.GameScreen gameScreen1;
+        private GameControls.GameScreen GameScreen;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }

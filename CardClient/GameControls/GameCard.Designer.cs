@@ -38,7 +38,7 @@
             this.PicCard.Image = global::CardClient.Properties.Resources.card_back;
             this.PicCard.Location = new System.Drawing.Point(0, 0);
             this.PicCard.Name = "PicCard";
-            this.PicCard.Size = new System.Drawing.Size(389, 422);
+            this.PicCard.Size = new System.Drawing.Size(235, 305);
             this.PicCard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PicCard.TabIndex = 0;
             this.PicCard.TabStop = false;
@@ -50,7 +50,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.PicCard);
             this.Name = "GameCard";
-            this.Size = new System.Drawing.Size(389, 422);
+            this.Size = new System.Drawing.Size(235, 305);
             ((System.ComponentModel.ISupportInitialize)(this.PicCard)).EndInit();
             this.ResumeLayout(false);
 

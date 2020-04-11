@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Reflection;
+
 namespace CardClient
 {
     public partial class GameWindow : Form
@@ -15,6 +17,11 @@ namespace CardClient
         public GameWindow()
         {
             InitializeComponent();
+        }
+
+        private void gameScreen1_Click(object sender, EventArgs e)
+        {
+            GameScreen.onGameCardClick(sender, e);
         }
     }
 }

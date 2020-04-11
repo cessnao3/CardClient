@@ -12,7 +12,7 @@ namespace CardClient.GameControls
 {
     public partial class GameCard : UserControl
     {
-        GameLibrary.Cards.Card base_card;
+        public GameLibrary.Cards.Card base_card { get; private set; }
         bool card_shown = false;
 
         public GameCard(GameLibrary.Cards.Card card=null)
@@ -37,9 +37,11 @@ namespace CardClient.GameControls
 
         public void UpdatePicture()
         {
+            Bitmap bmp_to_set;
+
             if (base_card == null || !card_shown)
             {
-                this.PicCard.Image = Properties.Resources.card_back;
+                bmp_to_set = Properties.Resources.card_back;
             }
             else
             {
@@ -51,15 +53,16 @@ namespace CardClient.GameControls
                     suit_name,
                     value_name);
 
-                this.PicCard.Image = (Bitmap)Properties.Resources.ResourceManager.GetObject(card_name);
+                bmp_to_set = (Bitmap)Properties.Resources.ResourceManager.GetObject(card_name);
             }
 
-            //this.Visible = base_card != null;
+            PicCard.Image = bmp_to_set;
         }
 
         public void SetWidth(int width)
         {
-            this.Size = new Size(width, (int)(width * 1.5));
+            Size = new Size(width, (int)(width * 1.5));
+            UpdatePicture();
         }
     }
 }
