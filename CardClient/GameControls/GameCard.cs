@@ -64,5 +64,10 @@ namespace CardClient.GameControls
             Size = new Size(width, (int)(width * 1.5));
             UpdatePicture();
         }
+
+        private void PicCard_Click(object sender, EventArgs e)
+        {
+            this.InvokeOnClick(this, e);
+        }
     }
 }

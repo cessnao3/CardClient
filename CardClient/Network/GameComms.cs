@@ -11,42 +11,70 @@ namespace CardClient.Network
 {
     public class GameComms
     {
-        TcpClient client;
+        protected TcpClient client;
 
         protected static GameComms gc_instance = new GameComms();
 
-        static public GameComms GetInstance()
-        {
-            return gc_instance;
-        }
+        protected GameLibrary.Games.GamePlayer player;
+
+        bool failed = false;
 
         protected GameComms()
         {
             // Do Nothing
         }
 
-        public void ResetSocket()
+        static public void SetPlayer(GameLibrary.Games.GamePlayer p)
         {
+            gc_instance.player = p;
+        }
+
+        static public GameLibrary.Games.GamePlayer GetPlayer()
+        {
+            return gc_instance.player;
+        }
+
+        static public void ResetSocket()
+        {
+            TcpClient client = gc_instance.client;
+
             if (client != null) client.Close();
             client = new TcpClient();
             client.Connect(IPAddress.Loopback, 8088);
             //client.Connect(IPAddress.Parse("10.0.0.11"), 8088);
+
+            gc_instance.client = client;
         }
 
-        public void SendString(string s)
+        static public bool Failed()
         {
-            byte[] bytes = Encoding.ASCII.GetBytes(s);
-            client.GetStream().Write(bytes, 0, bytes.Length);
+            return gc_instance.failed;
         }
 
-        public void SendMessage(MsgBase msg)
+        static public void SendMessage(MsgBase msg)
         {
-            MessageReader.SendMessage(client, msg);
+            try
+            {
+                MessageReader.SendMessage(gc_instance.client, msg);
+            }
+            catch (System.IO.IOException)
+            {
+                gc_instance.failed = true;
+            }
         }
 
-        public MsgBase ReceiveMessage()
+        static public MsgBase ReceiveMessage()
         {
-            return MessageReader.ReadMessage(client);
+            try
+            {
+                return MessageReader.ReadMessage(gc_instance.client);
+            }
+            catch (System.IO.IOException)
+            {
+                gc_instance.failed = true;
+            }
+
+            return null;
         }
     }
 }

@@ -42,6 +42,7 @@
             this.PicCard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PicCard.TabIndex = 0;
             this.PicCard.TabStop = false;
+            this.PicCard.Click += new System.EventHandler(this.PicCard_Click);
             // 
             // GameCard
             // 

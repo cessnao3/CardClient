@@ -15,10 +15,9 @@ namespace CardClient
         [STAThread]
         static void Main()
         {
-            string d = Directory.GetCurrentDirectory();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameWindow());
+            Application.Run(new MainMenu());
         }
     }
 }

@@ -57,11 +57,9 @@ namespace CardClient
                     msg.password_hash = sb.ToString();
                 }
 
-                Network.GameComms gc = Network.GameComms.GetInstance();
-
                 try
                 {
-                    gc.ResetSocket();
+                    Network.GameComms.ResetSocket();
                 }
                 catch (System.Net.Sockets.SocketException)
                 {
@@ -69,13 +67,13 @@ namespace CardClient
                     return;
                 }
 
-                gc.SendMessage(msg);
+                Network.GameComms.SendMessage(msg);
 
                 MsgServerResponse msg_response = null;
 
                 for (int i = 0; i < 10; ++i)
                 {
-                    MsgBase msg_b = gc.ReceiveMessage();
+                    MsgBase msg_b = Network.GameComms.ReceiveMessage();
 
                     if (msg_b == null)
                     {
@@ -94,6 +92,7 @@ namespace CardClient
 
                 if (msg_response != null && msg_response.code == ResponseCodes.OK)
                 {
+                    Network.GameComms.SetPlayer(msg_response.user);
                     DialogResult = DialogResult.OK;
                     Close();
                 }
