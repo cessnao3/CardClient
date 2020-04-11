@@ -33,10 +33,13 @@
             this.LblPassword = new System.Windows.Forms.Label();
             this.TxtPass = new System.Windows.Forms.TextBox();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.BtnNew = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TxtUser
             // 
+            this.TxtUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TxtUser.Location = new System.Drawing.Point(71, 6);
             this.TxtUser.Name = "TxtUser";
             this.TxtUser.Size = new System.Drawing.Size(178, 20);
@@ -63,6 +66,8 @@
             // 
             // TxtPass
             // 
+            this.TxtPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TxtPass.Location = new System.Drawing.Point(71, 32);
             this.TxtPass.Name = "TxtPass";
             this.TxtPass.PasswordChar = '*';
@@ -72,6 +77,7 @@
             // 
             // BtnLogin
             // 
+            this.BtnLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnLogin.Location = new System.Drawing.Point(174, 63);
             this.BtnLogin.Name = "BtnLogin";
             this.BtnLogin.Size = new System.Drawing.Size(75, 23);
@@ -80,11 +86,23 @@
             this.BtnLogin.UseVisualStyleBackColor = true;
             this.BtnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
+            // BtnNew
+            // 
+            this.BtnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnNew.Location = new System.Drawing.Point(12, 63);
+            this.BtnNew.Name = "BtnNew";
+            this.BtnNew.Size = new System.Drawing.Size(75, 23);
+            this.BtnNew.TabIndex = 5;
+            this.BtnNew.Text = "New User";
+            this.BtnNew.UseVisualStyleBackColor = true;
+            this.BtnNew.Click += new System.EventHandler(this.BtnLogin_Click);
+            // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(261, 98);
+            this.Controls.Add(this.BtnNew);
             this.Controls.Add(this.BtnLogin);
             this.Controls.Add(this.TxtPass);
             this.Controls.Add(this.LblPassword);
@@ -108,5 +126,6 @@
         private System.Windows.Forms.Label LblPassword;
         private System.Windows.Forms.TextBox TxtPass;
         private System.Windows.Forms.Button BtnLogin;
+        private System.Windows.Forms.Button BtnNew;
     }
 }

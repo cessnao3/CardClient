@@ -5,10 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using Newtonsoft.Json;
+using GameLibrary.Messages;
+using GameLibrary.Network;
 
 namespace CardClient
 {
@@ -29,21 +30,52 @@ namespace CardClient
             string username = TxtUser.Text.ToLower().Trim();
             string password = TxtPass.Text.ToLower().Trim();
 
+            bool is_new_user = (Button)sender == BtnNew;
+
             if (username.Length > 0 && password.Length > 0)
             {
                 output_username = username;
                 output_password = password;
 
-                GameLibrary.Network.GameConnectionMessage msg = new GameLibrary.Network.GameConnectionMessage();
-                msg.action = GameLibrary.Network.GameConnectionMessage.ActionType.LoginUser;
+                MsgLogin msg = new MsgLogin();
+                msg.action = (is_new_user) ? MsgLogin.ActionType.NewUser : MsgLogin.ActionType.LoginUser;
                 msg.username = username;
                 msg.password_hash = password;
 
-                string json = JsonConvert.SerializeObject(msg);
+                Network.GameComms gc = Network.GameComms.GetInstance();
+                gc.ResetSocket();
+                gc.SendMessage(msg);
 
-                Network.GameComms.GetInstance().SendString(json);
+                MsgServerResponse msg_response = null;
 
-                Close();
+                for (int i = 0; i < 10; ++i)
+                {
+                    MsgBase msg_b = gc.ReceiveMessage();
+
+                    if (msg_b == null)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    else
+                    {
+                        if (msg_b is MsgServerResponse)
+                        {
+                            msg_response = (MsgServerResponse)msg_b;
+                        }
+
+                        break;
+                    }
+                }
+
+                if (msg_response != null && msg_response.code == ResponseCodes.OK)
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Login Failed");
+                }
             }
         }
 
