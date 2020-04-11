@@ -59,8 +59,7 @@ namespace CardClient.GameControls
 
         public void SetWidth(int width)
         {
-            this.Width = width;
-            this.Height = (int)(width * 1.5);
+            this.Size = new Size(width, (int)(width * 1.5));
         }
     }
 }

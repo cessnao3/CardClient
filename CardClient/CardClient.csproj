@@ -62,6 +62,12 @@
     <Compile Include="GameControls\GameCard.Designer.cs">
       <DependentUpon>GameCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameControls\GameScreen.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GameControls\GameScreen.Designer.cs">
+      <DependentUpon>GameScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GameControls\GameCard.resx">
       <DependentUpon>GameCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameControls\GameScreen.resx">
+      <DependentUpon>GameScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GameWindow.resx">
       <DependentUpon>GameWindow.cs</DependentUpon>

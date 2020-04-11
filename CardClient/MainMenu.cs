@@ -26,6 +26,10 @@ namespace CardClient
             {
                 Close();
             }
+            else
+            {
+                (new GameWindow()).Show(this);
+            }
         }
     }
 }
