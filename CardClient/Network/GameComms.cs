@@ -29,8 +29,8 @@ namespace CardClient.Network
         {
             if (client != null) client.Close();
             client = new TcpClient();
-            //client.Connect(IPAddress.Loopback, 8088);
-            client.Connect(IPAddress.Parse("10.0.0.11"), 8088);
+            client.Connect(IPAddress.Loopback, 8088);
+            //client.Connect(IPAddress.Parse("10.0.0.11"), 8088);
         }
 
         public void SendString(string s)
