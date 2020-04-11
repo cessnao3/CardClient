@@ -42,8 +42,33 @@ namespace CardClient
                 msg.username = username;
                 msg.password_hash = password;
 
+                using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+                {
+                    // Convert the password to bytes
+                    byte[] pw_bytes = Encoding.ASCII.GetBytes(output_password);
+                    byte[] hash_bytes = md5.ComputeHash(pw_bytes);
+
+                    // Convert the bytes to a hex string
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < hash_bytes.Length; i++)
+                    {
+                        sb.Append(hash_bytes[i].ToString("x2"));
+                    }
+                    msg.password_hash = sb.ToString();
+                }
+
                 Network.GameComms gc = Network.GameComms.GetInstance();
-                gc.ResetSocket();
+
+                try
+                {
+                    gc.ResetSocket();
+                }
+                catch (System.Net.Sockets.SocketException)
+                {
+                    MessageBox.Show(this, "Unable to connect to server");
+                    return;
+                }
+
                 gc.SendMessage(msg);
 
                 MsgServerResponse msg_response = null;
@@ -74,7 +99,7 @@ namespace CardClient
                 }
                 else
                 {
-                    MessageBox.Show("Login Failed");
+                    MessageBox.Show(this, "Login Failed");
                 }
             }
         }
