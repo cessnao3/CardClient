@@ -23,9 +23,17 @@ namespace CardClient.Network
 
         public static bool SetHost(string hostname)
         {
-            return IPAddress.TryParse(
-                hostname,
-                out gc_instance.host);
+            IPAddress[] addrs = Dns.GetHostAddresses(hostname);
+
+            if (addrs.Length > 0)
+            {
+                gc_instance.host = addrs[0];
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected GameComms()
