@@ -51,7 +51,8 @@ namespace CardClient.GameControls
                     Text = string.Empty,
                     BackColor = Color.PaleGreen,
                     Font = new Font(FontFamily.GenericMonospace, 9),
-                    TextAlign = ContentAlignment.MiddleCenter
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Visible = false
                 };
                 player_labels.Add(l);
                 Controls.Add(l);
@@ -204,16 +205,17 @@ namespace CardClient.GameControls
 
         private string PlayerString(int player_loc)
         {
+            GamePlayer p = players[player_loc];
             return string.Format(
                 "{0:}{1:} {2:  0}",
-                players[player_loc].name,
+                p.name.Substring(0, Math.Min(3, p.name.Length)),
                 (current_player_turn == player_loc) ? "*" : " ",
                 0);
         }
 
         private Size LabelSize()
         {
-            return new Size((int)(1.4 * CardWidth()), 18);
+            return new Size((int)(1.1 * CardWidth()), 18);
         }
 
         private void UpdateCardHorizontal(
@@ -242,6 +244,7 @@ namespace CardClient.GameControls
                 x_loc,
                 y_loc + (int)(is_top ? (1.1 * CardHeight()) : (-0.1 * CardHeight() - l.Height)));
             l.Text = PlayerString(player_loc);
+            l.Visible = true;
 
             foreach (GameCard gc in player_hand_controls[player_loc])
             {
@@ -289,6 +292,7 @@ namespace CardClient.GameControls
                 is_left ? x_loc : Width - l.Width,
                 y_loc - l.Height - (int)(0.1 * CardHeight()));
             l.Text = PlayerString(player_loc);
+            l.Visible = true;
 
             foreach (GameCard gc in cards)
             {

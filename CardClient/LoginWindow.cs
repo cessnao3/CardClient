@@ -23,6 +23,7 @@ namespace CardClient
             InitializeComponent();
 
             DialogResult = DialogResult.Cancel;
+            AcceptButton = BtnLogin;
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
