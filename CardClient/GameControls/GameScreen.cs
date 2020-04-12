@@ -203,17 +203,36 @@ namespace CardClient.GameControls
 
         private string PlayerString(int player_loc)
         {
-            GamePlayer p = players[player_loc];
+            string dir_str = "";
+            switch (player_loc)
+            {
+                case 0:
+                    dir_str = "N";
+                    break;
+                case 1:
+                    dir_str = "E";
+                    break;
+                case 2:
+                    dir_str = "S";
+                    break;
+                case 3:
+                    dir_str = "W";
+                    break;
+            }
+
+                    GamePlayer p = players[player_loc];
             return string.Format(
-                "{0:}{1:} {2:  0}",
+                "{0:} {1:}{2:}{4:}{3:  0}",
+                dir_str,
                 p.CapitalizedName().Substring(0, Math.Min(3, p.name.Length)),
                 (current_player_turn == player_loc) ? "*" : " ",
-                0);
+                0,
+                Environment.NewLine);
         }
 
         private Size LabelSize()
         {
-            return new Size((int)(1.1 * CardWidth()), 18);
+            return new Size((int)(1.1 * CardWidth()), 36);
         }
 
         private void UpdateCardHorizontal(
@@ -287,7 +306,7 @@ namespace CardClient.GameControls
             Label l = player_labels[player_loc];
             l.Size = LabelSize();
             l.Location = new Point(
-                is_left ? x_loc : Width - l.Width,
+                is_left ? x_loc : Width - l.Width - (int)(0.1 * CardWidth()),
                 y_loc - l.Height - (int)(0.1 * CardHeight()));
             l.Text = PlayerString(player_loc);
             l.Visible = true;
