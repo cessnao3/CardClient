@@ -34,13 +34,15 @@
             this.TxtPass = new System.Windows.Forms.TextBox();
             this.BtnLogin = new System.Windows.Forms.Button();
             this.BtnNew = new System.Windows.Forms.Button();
+            this.TxtHost = new System.Windows.Forms.TextBox();
+            this.LblHost = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // TxtUser
             // 
             this.TxtUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TxtUser.Location = new System.Drawing.Point(71, 6);
+            this.TxtUser.Location = new System.Drawing.Point(71, 38);
             this.TxtUser.Name = "TxtUser";
             this.TxtUser.Size = new System.Drawing.Size(178, 20);
             this.TxtUser.TabIndex = 0;
@@ -49,7 +51,7 @@
             // LblUser
             // 
             this.LblUser.AutoSize = true;
-            this.LblUser.Location = new System.Drawing.Point(12, 9);
+            this.LblUser.Location = new System.Drawing.Point(12, 41);
             this.LblUser.Name = "LblUser";
             this.LblUser.Size = new System.Drawing.Size(29, 13);
             this.LblUser.TabIndex = 1;
@@ -58,7 +60,7 @@
             // LblPassword
             // 
             this.LblPassword.AutoSize = true;
-            this.LblPassword.Location = new System.Drawing.Point(12, 35);
+            this.LblPassword.Location = new System.Drawing.Point(12, 67);
             this.LblPassword.Name = "LblPassword";
             this.LblPassword.Size = new System.Drawing.Size(53, 13);
             this.LblPassword.TabIndex = 2;
@@ -68,20 +70,20 @@
             // 
             this.TxtPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TxtPass.Location = new System.Drawing.Point(71, 32);
+            this.TxtPass.Location = new System.Drawing.Point(71, 64);
             this.TxtPass.Name = "TxtPass";
             this.TxtPass.PasswordChar = '*';
             this.TxtPass.Size = new System.Drawing.Size(178, 20);
-            this.TxtPass.TabIndex = 3;
+            this.TxtPass.TabIndex = 1;
             this.TxtPass.TextChanged += new System.EventHandler(this.TxtBox_UpdateText);
             // 
             // BtnLogin
             // 
             this.BtnLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnLogin.Location = new System.Drawing.Point(174, 63);
+            this.BtnLogin.Location = new System.Drawing.Point(174, 100);
             this.BtnLogin.Name = "BtnLogin";
             this.BtnLogin.Size = new System.Drawing.Size(75, 23);
-            this.BtnLogin.TabIndex = 4;
+            this.BtnLogin.TabIndex = 2;
             this.BtnLogin.Text = "Login";
             this.BtnLogin.UseVisualStyleBackColor = true;
             this.BtnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
@@ -89,19 +91,40 @@
             // BtnNew
             // 
             this.BtnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnNew.Location = new System.Drawing.Point(12, 63);
+            this.BtnNew.Location = new System.Drawing.Point(12, 100);
             this.BtnNew.Name = "BtnNew";
             this.BtnNew.Size = new System.Drawing.Size(75, 23);
-            this.BtnNew.TabIndex = 5;
+            this.BtnNew.TabIndex = 3;
             this.BtnNew.Text = "New User";
             this.BtnNew.UseVisualStyleBackColor = true;
             this.BtnNew.Click += new System.EventHandler(this.BtnLogin_Click);
+            // 
+            // TxtHost
+            // 
+            this.TxtHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TxtHost.Location = new System.Drawing.Point(71, 12);
+            this.TxtHost.Name = "TxtHost";
+            this.TxtHost.Size = new System.Drawing.Size(178, 20);
+            this.TxtHost.TabIndex = 4;
+            this.TxtHost.Text = "127.0.0.1";
+            // 
+            // LblHost
+            // 
+            this.LblHost.AutoSize = true;
+            this.LblHost.Location = new System.Drawing.Point(12, 15);
+            this.LblHost.Name = "LblHost";
+            this.LblHost.Size = new System.Drawing.Size(29, 13);
+            this.LblHost.TabIndex = 7;
+            this.LblHost.Text = "Host";
             // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(261, 98);
+            this.ClientSize = new System.Drawing.Size(261, 135);
+            this.Controls.Add(this.LblHost);
+            this.Controls.Add(this.TxtHost);
             this.Controls.Add(this.BtnNew);
             this.Controls.Add(this.BtnLogin);
             this.Controls.Add(this.TxtPass);
@@ -127,5 +150,7 @@
         private System.Windows.Forms.TextBox TxtPass;
         private System.Windows.Forms.Button BtnLogin;
         private System.Windows.Forms.Button BtnNew;
+        private System.Windows.Forms.TextBox TxtHost;
+        private System.Windows.Forms.Label LblHost;
     }
 }

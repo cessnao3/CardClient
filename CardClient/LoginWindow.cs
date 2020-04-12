@@ -28,8 +28,15 @@ namespace CardClient
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
+            string hostname = TxtHost.Text.ToLower().Trim();
             string username = TxtUser.Text.ToLower().Trim();
             string password = TxtPass.Text.ToLower().Trim();
+
+            // Try to set the hostname
+            if (!Network.GameComms.SetHost(hostname))
+            {
+                MessageBox.Show(this, "Please check hostname");
+            }
 
             bool is_new_user = (Button)sender == BtnNew;
 

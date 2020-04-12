@@ -19,6 +19,15 @@ namespace CardClient.Network
 
         bool failed = false;
 
+        IPAddress host;
+
+        public static bool SetHost(string hostname)
+        {
+            return IPAddress.TryParse(
+                hostname,
+                out gc_instance.host);
+        }
+
         protected GameComms()
         {
             // Do Nothing
@@ -40,8 +49,7 @@ namespace CardClient.Network
 
             if (client != null) client.Close();
             client = new TcpClient();
-            client.Connect(IPAddress.Loopback, 8088);
-            //client.Connect(IPAddress.Parse("10.0.0.11"), 8088);
+            client.Connect(gc_instance.host, 8088);
 
             gc_instance.client = client;
         }
