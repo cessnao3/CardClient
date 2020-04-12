@@ -180,12 +180,10 @@ namespace CardClient.GameControls
                     {
                         Network.GameComms.SendMessage(new MsgGamePlay()
                         {
-                            action = GameActions.CardPlay,
                             card = gc.base_card,
-                            game_id = 0
+                            game_id = 0,
+                            player = players[player_position]
                         });
-
-                        //player_hands[player_position].cards.RemoveAt(i);
                         UpdateHands();
                         break;
                     }
@@ -208,7 +206,7 @@ namespace CardClient.GameControls
             GamePlayer p = players[player_loc];
             return string.Format(
                 "{0:}{1:} {2:  0}",
-                p.name.Substring(0, Math.Min(3, p.name.Length)),
+                p.CapitalizedName().Substring(0, Math.Min(3, p.name.Length)),
                 (current_player_turn == player_loc) ? "*" : " ",
                 0);
         }
