@@ -33,7 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrGameUpdate = new System.Windows.Forms.Timer(this.components);
             this.gameScreen = new CardClient.GameControls.GameScreen();
             this.menuStrip1.SuspendLayout();
@@ -67,18 +67,18 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.toolStripStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 554);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(956, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // toolStripStatus
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(73, 17);
-            this.toolStripStatusLabel1.Text = "Game Status";
+            this.toolStripStatus.Name = "toolStripStatus";
+            this.toolStripStatus.Size = new System.Drawing.Size(73, 17);
+            this.toolStripStatus.Text = "Game Status";
             // 
             // tmrGameUpdate
             // 
@@ -126,7 +126,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private GameControls.GameScreen gameScreen;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatus;
         private System.Windows.Forms.Timer tmrGameUpdate;
     }
 }

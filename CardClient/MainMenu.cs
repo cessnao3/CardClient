@@ -15,6 +15,8 @@ namespace CardClient
     {
         Dictionary<int, GameWindow> game_windows = new Dictionary<int, GameWindow>();
 
+
+
         public MainMenu()
         {
             InitializeComponent();
@@ -31,9 +33,11 @@ namespace CardClient
             }
             else
             {
+                Hide();
                 tmrServerTick.Enabled = true;
                 game_windows.Add(0, new GameWindow(0));
-                game_windows[0].Show(this);
+                game_windows[0].ShowDialog(this);
+                Show();
             }
         }
 
@@ -80,7 +84,8 @@ namespace CardClient
             // Check for server failure
             if (Network.GameComms.Failed())
             {
-                Application.Restart();
+                //Application.Restart();
+                Application.Exit();
             }
         }
     }

@@ -57,12 +57,19 @@ namespace CardClient.GameControls
             }
 
             PicCard.Image = bmp_to_set;
+
+            Visible = base_card != null;
         }
 
         public void SetWidth(int width)
         {
-            Size = new Size(width, (int)(width * 1.5));
+            Size = new Size(width, (int)(width * HeightRatio()));
             UpdatePicture();
+        }
+
+        public static double HeightRatio()
+        {
+            return 1.5;
         }
 
         private void PicCard_Click(object sender, EventArgs e)

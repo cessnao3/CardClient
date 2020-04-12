@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using GameLibrary.Cards;
+using GameLibrary.Games;
 using GameLibrary.Messages;
 
 namespace CardClient.GameControls
@@ -17,11 +17,14 @@ namespace CardClient.GameControls
     {
         List<Hand> player_hands;
 
-        List<List<GameCard>> player_hand_controls;
+        List<GamePlayer> players;
+        List<List<GameCard>> player_hand_controls = new List<List<GameCard>>();
+        List<GameCard> center_pool_cards = new List<GameCard>();
+        List<Label> player_labels = new List<Label>();
 
         const int num_players = 4;
         int player_position = -1;
-        int current_player = -1;
+        int current_player_turn = -1;
 
         int game_id = -1;
 
@@ -29,20 +32,39 @@ namespace CardClient.GameControls
         {
             InitializeComponent();
 
-            // Setup the player hands
+            // Setup the player hands and other per-player items
             player_hands = new List<Hand>();
             for (int i = 0; i < num_players; ++i)
             {
+                // Define the hands
                 player_hands.Add(new Hand());
-            }
 
-            // Define the player hand controls
-            player_hand_controls = new List<List<GameCard>>();
+                // Setup the center-pool cards
+                GameCard center_card = new GameCard();
+                center_card.SetFaceShown(true);
+                center_pool_cards.Add(center_card);
+                Controls.Add(center_card);
+
+                // Setup the player labels
+                Label l = new Label()
+                {
+                    Text = string.Empty,
+                    BackColor = Color.PaleGreen,
+                    Font = new Font(FontFamily.GenericMonospace, 9),
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
+                player_labels.Add(l);
+                Controls.Add(l);
+            }
 
             // Update the hands and the card locations
             UpdateHands();
         }
 
+        /// <summary>
+        /// Defines the game ID for the current game window
+        /// </summary>
+        /// <param name="game_id">The Game ID to apply to the current game window</param>
         public void SetGameID(int game_id)
         {
             this.game_id = game_id;
@@ -66,7 +88,14 @@ namespace CardClient.GameControls
                 }
             }
 
-            current_player = status.current_player;
+            for (int i = 0; i < status.center_pool.Count; ++i)
+            {
+                center_pool_cards[i].SetCard(c: status.center_pool[i]);
+            }
+
+            players = status.players;
+
+            current_player_turn = status.current_player;
 
             UpdateHands();
             UpdateCardLocations();
@@ -168,6 +197,25 @@ namespace CardClient.GameControls
             return Width / 16;
         }
 
+        private int CardHeight()
+        {
+            return (int)(CardWidth() * GameCard.HeightRatio());
+        }
+
+        private string PlayerString(int player_loc)
+        {
+            return string.Format(
+                "{0:}{1:} {2:  0}",
+                players[player_loc].name,
+                (current_player_turn == player_loc) ? "*" : " ",
+                0);
+        }
+
+        private Size LabelSize()
+        {
+            return new Size((int)(1.4 * CardWidth()), 18);
+        }
+
         private void UpdateCardHorizontal(
             int player_loc,
             bool is_top)
@@ -175,28 +223,94 @@ namespace CardClient.GameControls
             List<GameCard> cards = player_hand_controls[player_loc];
 
             int card_incr = CardWidth() + 2;
-            int x_loc = Width / 2 - card_incr * cards.Count / 2;
+            int x_center = Width / 2;
+            int x_loc = x_center - card_incr * cards.Count / 2;
+
+            int y_loc;
+            if (is_top)
+            {
+                y_loc = (int)(CardHeight() * 0.1);
+            }
+            else
+            {
+                y_loc = (int)(Height - CardHeight() * 1.1);
+            }
+
+            Label l = player_labels[player_loc];
+            l.Size = LabelSize();
+            l.Location = new Point(
+                x_loc,
+                y_loc + (int)(is_top ? (1.1 * CardHeight()) : (-0.1 * CardHeight() - l.Height)));
+            l.Text = PlayerString(player_loc);
 
             foreach (GameCard gc in player_hand_controls[player_loc])
             {
                 gc.SetWidth(CardWidth());
-
-                int y_loc = (is_top) ? (int)(gc.Height * 0.1) : (Height - (int)(gc.Height * 1.1));
-
                 gc.Location = new Point(
                     x_loc,
                     y_loc);
-
                 x_loc += card_incr;
             }
+
+            // Increment a modified card length for the center pool / played cards
+            y_loc += (int)((is_top ? 1 : -1) * CardHeight() * 1.1);
+
+            GameCard pool_card = center_pool_cards[player_loc];
+            pool_card.SetWidth(CardWidth());
+            pool_card.Location = new Point(
+                x_center,
+                y_loc);
+        }
+
+        private void UpdateCardVertical(
+            int player_loc,
+            bool is_left)
+        {
+            List<GameCard> cards = player_hand_controls[player_loc];
+
+            int y_center = Height / 2 - (int) (CardHeight() / 2.0);
+
+            int card_incr = Height / 2 / cards.Count;
+            int y_loc = y_center - card_incr * cards.Count / 2;
+
+            int x_loc;
+            if (is_left)
+            {
+                x_loc = (int)(0.1 * CardWidth());
+            }
+            else
+            {
+                x_loc = (int)(Width - 1.1 * CardWidth());
+            }
+
+            Label l = player_labels[player_loc];
+            l.Size = LabelSize();
+            l.Location = new Point(
+                is_left ? x_loc : Width - l.Width,
+                y_loc - l.Height - (int)(0.1 * CardHeight()));
+            l.Text = PlayerString(player_loc);
+
+            foreach (GameCard gc in cards)
+            {
+                gc.SetWidth(CardWidth());
+                gc.Location = new Point(
+                    x_loc,
+                    y_loc);
+                y_loc += card_incr;
+            }
+
+            x_loc += (is_left ? 1 : -1) * (int)(CardWidth() * 1.1);
+
+            GameCard pool_card = center_pool_cards[player_loc];
+            pool_card.SetWidth(CardWidth());
+            pool_card.Location = new Point(
+                x_loc,
+                y_center);
         }
 
         private void UpdateCardLocations()
         {
             if (player_position < 0) return;
-
-            int card_width = Width / 16;
-            int center_x = Width / 2;
 
             UpdateCardHorizontal(
                 player_position,
@@ -205,21 +319,13 @@ namespace CardClient.GameControls
                 (player_position + 2) % player_hand_controls.Count,
                 is_top: true);
 
-            foreach (GameCard gc in player_hand_controls[(player_position + 1) % player_hand_controls.Count])
-            {
-                gc.SetWidth(card_width);
-                gc.Location = new Point(
-                    (int)(0.1 * card_width),
-                    Height / 2 - gc.Height / 2);
-            }
+            UpdateCardVertical(
+                (player_position + 1) % player_hand_controls.Count,
+                is_left: true);
 
-            foreach (GameCard gc in player_hand_controls[(player_position + 3) % player_hand_controls.Count])
-            {
-                gc.SetWidth(card_width);
-                gc.Location = new Point(
-                    Width - (int)(1.1 * card_width),
-                    Height / 2 - gc.Height / 2);
-            }
+            UpdateCardVertical(
+                (player_position + 3) % player_hand_controls.Count,
+                is_left: false);
         }
 
         private void GameScreen_SizeChanged(object sender, EventArgs e)

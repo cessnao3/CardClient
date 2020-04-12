@@ -42,6 +42,14 @@ namespace CardClient
         public void UpdateGame(MsgGameStatus status)
         {
             gameScreen.UpdateFromStatus(status);
+            if (status.current_game_status != null && status.current_game_status.Length > 0)
+            {
+                toolStripStatus.Text = "Status: " + status.current_game_status;
+            }
+            else
+            {
+                toolStripStatus.Text = "No Game Status";
+            }
         }
     }
 }
