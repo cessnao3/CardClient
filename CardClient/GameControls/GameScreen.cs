@@ -22,6 +22,8 @@ namespace CardClient.GameControls
         List<GameCard> center_pool_cards = new List<GameCard>();
         List<Label> player_labels = new List<Label>();
 
+        List<int> scores;
+
         const int num_players = 4;
         int player_position = -1;
         int current_player_turn = -1;
@@ -73,13 +75,9 @@ namespace CardClient.GameControls
 
         public void UpdateFromStatus(MsgGameStatus status)
         {
-            if (status.game_id != game_id)
-            {
-                return;
-            }
-
             player_hands = status.hands;
 
+            player_position = -1;
             for (int i = 0; i < status.players.Count; ++i)
             {
                 if (status.players[i].Equals(Network.GameComms.GetPlayer()))
@@ -97,6 +95,8 @@ namespace CardClient.GameControls
             players = status.players;
 
             current_player_turn = status.current_player;
+
+            scores = status.scores;
 
             UpdateHands();
             UpdateCardLocations();
@@ -170,9 +170,6 @@ namespace CardClient.GameControls
             if (sender is GameCard)
             {
                 GameCard gc = (GameCard)sender;
-                Console.WriteLine(string.Format(
-                    "Card {0:s} clicked",
-                    gc.base_card.ToString()));
 
                 for (int i = 0; i < player_hands[player_position].cards.Count; ++i)
                 {
@@ -181,9 +178,12 @@ namespace CardClient.GameControls
                         Network.GameComms.SendMessage(new MsgGamePlay()
                         {
                             card = gc.base_card,
-                            game_id = 0,
+                            game_id = game_id,
                             player = players[player_position]
                         });
+                        Console.WriteLine(string.Format(
+                            "Card {0:s} clicked",
+                            gc.base_card.ToString()));
                         UpdateHands();
                         break;
                     }
@@ -226,7 +226,7 @@ namespace CardClient.GameControls
                 dir_str,
                 p.CapitalizedName().Substring(0, Math.Min(3, p.name.Length)),
                 (current_player_turn == player_loc) ? "*" : " ",
-                0,
+                scores[player_loc],
                 Environment.NewLine);
         }
 
@@ -244,6 +244,7 @@ namespace CardClient.GameControls
             int card_incr = CardWidth() + 2;
             int x_center = Width / 2;
             int x_loc = x_center - card_incr * cards.Count / 2;
+            int x_loc_lbl = x_center - card_incr * 13 / 2;
 
             int y_loc;
             if (is_top)
@@ -258,7 +259,7 @@ namespace CardClient.GameControls
             Label l = player_labels[player_loc];
             l.Size = LabelSize();
             l.Location = new Point(
-                x_loc,
+                x_loc_lbl,
                 y_loc + (int)(is_top ? (1.1 * CardHeight()) : (-0.1 * CardHeight() - l.Height)));
             l.Text = PlayerString(player_loc);
             l.Visible = true;
@@ -290,8 +291,9 @@ namespace CardClient.GameControls
 
             int y_center = Height / 2 - (int) (CardHeight() / 2.0);
 
-            int card_incr = Height / 2 / cards.Count;
+            int card_incr = (int)(Height / 2.0 / 13.0);
             int y_loc = y_center - card_incr * cards.Count / 2;
+            int y_loc_init = y_center - card_incr * 13 / 2;
 
             int x_loc;
             if (is_left)
@@ -307,7 +309,7 @@ namespace CardClient.GameControls
             l.Size = LabelSize();
             l.Location = new Point(
                 is_left ? x_loc : Width - l.Width - (int)(0.1 * CardWidth()),
-                y_loc - l.Height - (int)(0.1 * CardHeight()));
+                y_loc_init - l.Height - (int)(0.1 * CardHeight()));
             l.Text = PlayerString(player_loc);
             l.Visible = true;
 

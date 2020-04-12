@@ -53,6 +53,8 @@ namespace CardClient.Network
 
         static public void SendMessage(MsgBase msg)
         {
+            if (gc_instance.client == null) return;
+
             try
             {
                 MessageReader.SendMessage(gc_instance.client, msg);
@@ -65,6 +67,8 @@ namespace CardClient.Network
 
         static public MsgBase ReceiveMessage()
         {
+            if (gc_instance.client == null) return null;
+
             try
             {
                 return MessageReader.ReadMessage(gc_instance.client);

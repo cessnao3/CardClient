@@ -23,6 +23,8 @@ namespace CardClient
             gameScreen.SetGameID(this.game_id);
 
             tmrGameUpdate_Tick(null, null);
+
+            Text = "Game - " + Network.GameComms.GetPlayer().CapitalizedName();
         }
 
         private void gameScreen_Click(object sender, EventArgs e)
@@ -41,6 +43,10 @@ namespace CardClient
 
         public void UpdateGame(MsgGameStatus status)
         {
+            // Check that the ID values
+            if (status.game_id != game_id) return;
+
+            // Update the status window
             gameScreen.UpdateFromStatus(status);
             if (status.current_game_status != null && status.current_game_status.Length > 0)
             {
@@ -50,6 +56,11 @@ namespace CardClient
             {
                 toolStripStatus.Text = "No Game Status";
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
