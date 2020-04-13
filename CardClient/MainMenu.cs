@@ -243,5 +243,10 @@ namespace CardClient
                 }
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new AboutForm()).ShowDialog(this);
+        }
     }
 }

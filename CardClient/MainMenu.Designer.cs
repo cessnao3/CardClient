@@ -38,6 +38,7 @@
             this.ListLobbies = new System.Windows.Forms.ListView();
             this.ListGames = new System.Windows.Forms.ListView();
             this.tmrLobbyCheck = new System.Windows.Forms.Timer(this.components);
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +46,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.lobbiesToolStripMenuItem});
+            this.lobbiesToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -119,6 +121,13 @@
             this.tmrLobbyCheck.Interval = 10000;
             this.tmrLobbyCheck.Tick += new System.EventHandler(this.tmrLobbyCheck_Tick);
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,6 +158,7 @@
         private System.Windows.Forms.ListView ListLobbies;
         private System.Windows.Forms.ListView ListGames;
         private System.Windows.Forms.Timer tmrLobbyCheck;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
