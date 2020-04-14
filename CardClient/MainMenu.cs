@@ -228,7 +228,7 @@ namespace CardClient
 
                 // Checkout Lobby Parameters
                 game_window = new GameWindow(entry.id);
-                game_window.ShowDialog();
+                game_window.ShowDialog(this);
                 game_window = null;
 
                 // Re-show the main form
