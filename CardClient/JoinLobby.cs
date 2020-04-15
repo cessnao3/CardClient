@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CardGameLibrary.Messages;
 
 namespace CardClient
 {
@@ -23,7 +24,7 @@ namespace CardClient
             tmrStatusUpdate_Tick(null, null);
         }
 
-        public void UpdateStatus(GameLibrary.Messages.MsgLobbyStatus status)
+        public void UpdateStatus(CardGameLibrary.Messages.MsgLobbyStatus status)
         {
             if (lobby_id != status.game_id) return;
 
@@ -44,7 +45,7 @@ namespace CardClient
             };
 
             bool player_is_in = false;
-            GameLibrary.Games.GamePlayer player = Network.GameComms.GetPlayer();
+            CardGameLibrary.Games.GamePlayer player = Network.GameComms.GetPlayer();
 
             for (int i = 0; i < Math.Min(4, status.players.Count); ++i)
             {
@@ -76,19 +77,19 @@ namespace CardClient
 
         private void tmrStatusUpdate_Tick(object sender, EventArgs e)
         {
-            Network.GameComms.SendMessage(new GameLibrary.Messages.MsgClientRequest()
+            Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = GameLibrary.Messages.MsgClientRequest.RequestType.LobbyStatus,
+                request = MsgClientRequest.RequestType.LobbyStatus,
                 game_id = lobby_id,
                 data = -1
             });
         }
 
-        private void SendJoinRequest(GameLibrary.Games.LobbyPositions pos)
+        private void SendJoinRequest(CardGameLibrary.Games.LobbyPositions pos)
         {
-            Network.GameComms.SendMessage(new GameLibrary.Messages.MsgClientRequest()
+            Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = GameLibrary.Messages.MsgClientRequest.RequestType.JoinLobby,
+                request = MsgClientRequest.RequestType.JoinLobby,
                 game_id = lobby_id,
                 data = (int)pos
             });
@@ -96,9 +97,9 @@ namespace CardClient
 
         private void SendLeaveRequest()
         {
-            Network.GameComms.SendMessage(new GameLibrary.Messages.MsgClientRequest()
+            Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = GameLibrary.Messages.MsgClientRequest.RequestType.LeaveLobby,
+                request = MsgClientRequest.RequestType.LeaveLobby,
                 game_id = lobby_id,
                 data = -1
             });
@@ -116,22 +117,22 @@ namespace CardClient
 
         private void BtnNorth_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(GameLibrary.Games.LobbyPositions.North);
+            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.North);
         }
 
         private void BtnSouth_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(GameLibrary.Games.LobbyPositions.South);
+            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.South);
         }
 
         private void BtnEast_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(GameLibrary.Games.LobbyPositions.East);
+            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.East);
         }
 
         private void BtnWest_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(GameLibrary.Games.LobbyPositions.West);
+            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.West);
         }
     }
 }

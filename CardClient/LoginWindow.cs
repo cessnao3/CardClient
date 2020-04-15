@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GameLibrary.Messages;
-using GameLibrary.Network;
+using CardGameLibrary.Messages;
+using CardGameLibrary.Network;
 
 namespace CardClient
 {

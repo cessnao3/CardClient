@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CardGameLibrary.Cards;
 
 namespace CardClient.GameControls
 {
     public partial class GameCard : UserControl
     {
-        public GameLibrary.Cards.Card base_card { get; private set; }
+        public Card base_card { get; private set; }
         bool card_shown = false;
 
-        public GameCard(GameLibrary.Cards.Card card=null)
+        public GameCard(Card card=null)
         {
             InitializeComponent();
 
@@ -23,7 +24,7 @@ namespace CardClient.GameControls
             UpdatePicture();
         }
 
-        public void SetCard(GameLibrary.Cards.Card c)
+        public void SetCard(Card c)
         {
             base_card = c;
             UpdatePicture();

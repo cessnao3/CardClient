@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using GameLibrary.Messages;
-using GameLibrary.Network;
+using CardGameLibrary.Games;
+using CardGameLibrary.Messages;
+using CardGameLibrary.Network;
 
 namespace CardClient.Network
 {
     public class GameComms
     {
-        protected TcpClient client;
+        protected ClientStruct client_struct;
 
         protected static GameComms gc_instance = new GameComms();
 
-        protected GameLibrary.Games.GamePlayer player;
+        protected GamePlayer player;
 
         bool failed = false;
 
@@ -41,25 +42,28 @@ namespace CardClient.Network
             // Do Nothing
         }
 
-        static public void SetPlayer(GameLibrary.Games.GamePlayer p)
+        static public void SetPlayer(GamePlayer p)
         {
             gc_instance.player = p;
         }
 
-        static public GameLibrary.Games.GamePlayer GetPlayer()
+        static public GamePlayer GetPlayer()
         {
             return gc_instance.player;
         }
 
         static public void ResetSocket()
         {
-            TcpClient client = gc_instance.client;
+            if (gc_instance.client_struct != null)
+            {
+                gc_instance.client_struct.Close();
+                gc_instance.client_struct = null;
+            }
 
-            if (client != null) client.Close();
-            client = new TcpClient();
+            TcpClient client = new TcpClient();
             client.Connect(gc_instance.host, 8088);
 
-            gc_instance.client = client;
+            gc_instance.client_struct = new ClientStruct(client);
         }
 
         static public bool Failed()
@@ -69,11 +73,11 @@ namespace CardClient.Network
 
         static public void SendMessage(MsgBase msg)
         {
-            if (gc_instance.client == null) return;
+            if (gc_instance.client_struct == null) return;
 
             try
             {
-                MessageReader.SendMessage(gc_instance.client, msg);
+                MessageReader.SendMessage(gc_instance.client_struct, msg);
             }
             catch (System.IO.IOException)
             {
@@ -83,11 +87,11 @@ namespace CardClient.Network
 
         static public MsgBase ReceiveMessage()
         {
-            if (gc_instance.client == null) return null;
+            if (gc_instance.client_struct == null) return null;
 
             try
             {
-                return MessageReader.ReadMessage(gc_instance.client);
+                return MessageReader.ReadMessage(gc_instance.client_struct);
             }
             catch (System.IO.IOException)
             {

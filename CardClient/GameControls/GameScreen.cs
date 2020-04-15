@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GameLibrary.Cards;
-using GameLibrary.Games;
-using GameLibrary.Messages;
+using CardGameLibrary.Cards;
+using CardGameLibrary.Games;
+using CardGameLibrary.Messages;
 
 namespace CardClient.GameControls
 {

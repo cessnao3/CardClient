@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GameLibrary.Messages;
+using CardGameLibrary.Messages;
 
 namespace CardClient
 {
@@ -172,7 +172,7 @@ namespace CardClient
             {
                 request = MsgClientRequest.RequestType.NewLobby,
                 game_id = -1,
-                data = (int)GameLibrary.Games.GameTypes.Hearts
+                data = (int)CardGameLibrary.Games.GameTypes.Hearts
             });
 
             // Request a lobby list
