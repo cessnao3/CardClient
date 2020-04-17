@@ -124,7 +124,7 @@ namespace CardClient
                 }
                 else
                 {
-                    string_val.Remove(i);
+                    string_val = string_val.Remove(i);
                 }
             }
 
