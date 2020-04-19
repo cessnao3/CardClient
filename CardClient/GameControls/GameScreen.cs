@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CardGameLibrary.Cards;
-using CardGameLibrary.Games;
+using CardGameLibrary.GameParameters;
 using CardGameLibrary.Messages;
 
 namespace CardClient.GameControls
@@ -16,10 +16,12 @@ namespace CardClient.GameControls
     public partial class GameScreen : UserControl
     {
         List<Hand> player_hands;
+        List<Card> center_cards;
 
         List<GamePlayer> players;
         List<List<GameCard>> player_hand_controls = new List<List<GameCard>>();
-        List<GameCard> center_pool_cards = new List<GameCard>();
+        List<GameCard> played_game_cards = new List<GameCard>();
+        List<GameCard> center_game_cards = new List<GameCard>();
         List<Label> player_labels = new List<Label>();
 
         List<int> scores;
@@ -36,15 +38,16 @@ namespace CardClient.GameControls
 
             // Setup the player hands and other per-player items
             player_hands = new List<Hand>();
+            center_cards = new List<Card>();
             for (int i = 0; i < num_players; ++i)
             {
                 // Define the hands
                 player_hands.Add(new Hand());
 
-                // Setup the center-pool cards
+                // Setup the played-card cards
                 GameCard center_card = new GameCard();
                 center_card.SetFaceShown(true);
-                center_pool_cards.Add(center_card);
+                played_game_cards.Add(center_card);
                 Controls.Add(center_card);
 
                 // Setup the player labels
@@ -61,7 +64,7 @@ namespace CardClient.GameControls
             }
 
             // Update the hands and the card locations
-            UpdateHands();
+            SyncHandCards();
         }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace CardClient.GameControls
         public void UpdateFromStatus(MsgGameStatus status)
         {
             player_hands = status.hands;
+            center_cards = status.center_action_cards;
 
             player_position = -1;
             for (int i = 0; i < status.players.Count; ++i)
@@ -87,9 +91,9 @@ namespace CardClient.GameControls
                 }
             }
 
-            for (int i = 0; i < status.center_pool.Count; ++i)
+            for (int i = 0; i < status.played_cards_by_player.Count; ++i)
             {
-                center_pool_cards[i].SetCard(c: status.center_pool[i]);
+                played_game_cards[i].SetCard(c: status.played_cards_by_player[i]);
             }
 
             players = status.players;
@@ -98,12 +102,63 @@ namespace CardClient.GameControls
 
             scores = status.scores;
 
-            UpdateHands();
-            UpdateCardLocations();
+            SyncHandCards();
+            SyncCenterCards();
         }
 
 
-        public void UpdateHands()
+        public void SyncCenterCards()
+        {
+            // Update the cards if needed
+            bool update_needed = false;
+
+            // Loop through the center cards to define output parameters
+            for (int i = 0; i < center_cards.Count; ++i)
+            {
+                GameCard game_card;
+                Card card = center_cards[i];
+
+                if (i < center_game_cards.Count)
+                {
+                    game_card = center_game_cards[i];
+
+                    if (!game_card.base_card.Equals(card))
+                    {
+                        game_card.SetCard(card);
+                        update_needed = true;
+                    }
+                }
+                else
+                {
+                    game_card = new GameCard(card: card);
+                    Controls.Add(game_card);
+                    center_game_cards.Add(game_card);
+                    game_card.Click += onGameCardClick;
+                    update_needed = true;
+                }
+
+                game_card.SetFaceShown(true);
+            }
+
+            // Remove extra cards
+            while (center_game_cards.Count > center_cards.Count)
+            {
+                int end_i = center_game_cards.Count - 1;
+                GameCard gc = center_game_cards[end_i];
+                Controls.Remove(gc);
+                center_game_cards.RemoveAt(end_i);
+                update_needed = true;
+            }
+
+            // Update the card locations as needed
+            if (update_needed)
+            {
+                UpdateCenterCards();
+            }
+        }
+
+
+        public void SyncHandCards()
         {
             // Don't update if the current player is undefined
             if (player_position < 0) return;
@@ -131,7 +186,7 @@ namespace CardClient.GameControls
                     {
                         game_card = player_hand_controls[i][j];
 
-                        if (game_card.base_card != card)
+                        if (!game_card.base_card.Equals(card))
                         {
                             game_card.SetCard(c: card);
                             update_needed = true;
@@ -171,9 +226,13 @@ namespace CardClient.GameControls
             {
                 GameCard gc = (GameCard)sender;
 
-                for (int i = 0; i < player_hands[player_position].cards.Count; ++i)
+                List<Card> cards_to_check = new List<Card>();
+                cards_to_check.AddRange(player_hands[player_position].cards);
+                cards_to_check.AddRange(center_cards);
+
+                foreach (Card check_card in cards_to_check)
                 {
-                    if (gc.base_card == player_hands[player_position].cards[i])
+                    if (check_card != null && check_card.Equals(gc.base_card))
                     {
                         Network.GameComms.SendMessage(new MsgGamePlay()
                         {
@@ -184,7 +243,7 @@ namespace CardClient.GameControls
                         Console.WriteLine(string.Format(
                             "Card {0:s} clicked",
                             gc.base_card.ToString()));
-                        UpdateHands();
+                        SyncHandCards();
                         break;
                     }
                 }
@@ -224,7 +283,7 @@ namespace CardClient.GameControls
             return string.Format(
                 "{0:} {1:}{2:}{4:}{3:  0}",
                 dir_str,
-                p.CapitalizedName().Substring(0, Math.Min(3, p.name.Length)),
+                p.ShortName(),
                 (current_player_turn == player_loc) ? "*" : " ",
                 scores[player_loc],
                 Environment.NewLine);
@@ -235,15 +294,33 @@ namespace CardClient.GameControls
             return new Size((int)(1.1 * CardWidth()), 36);
         }
 
+        private void UpdateCenterCards()
+        {
+            int card_incr = CardWidth() + 2;
+            int x_center = Width / 2;
+            int x_loc = x_center - card_incr * center_game_cards.Count / 2;
+
+            int y_loc = Height / 2 - CardHeight();
+
+            foreach (GameCard gc in center_game_cards)
+            {
+                gc.SetWidth(CardWidth());
+                gc.Location = new Point(
+                    x_loc,
+                    y_loc);
+                x_loc += card_incr;
+            }
+        }
+
         private void UpdateCardHorizontal(
             int player_loc,
             bool is_top)
         {
-            List<GameCard> cards = player_hand_controls[player_loc];
+            List<GameCard> game_cards = player_hand_controls[player_loc];
 
             int card_incr = CardWidth() + 2;
             int x_center = Width / 2;
-            int x_loc = x_center - card_incr * cards.Count / 2;
+            int x_loc = x_center - card_incr * game_cards.Count / 2;
             int x_loc_lbl = x_center - card_incr * 13 / 2;
 
             int y_loc;
@@ -264,7 +341,7 @@ namespace CardClient.GameControls
             l.Text = PlayerString(player_loc);
             l.Visible = true;
 
-            foreach (GameCard gc in player_hand_controls[player_loc])
+            foreach (GameCard gc in game_cards)
             {
                 gc.SetWidth(CardWidth());
                 gc.Location = new Point(
@@ -276,7 +353,7 @@ namespace CardClient.GameControls
             // Increment a modified card length for the center pool / played cards
             y_loc += (int)((is_top ? 1 : -1) * CardHeight() * 1.1);
 
-            GameCard pool_card = center_pool_cards[player_loc];
+            GameCard pool_card = played_game_cards[player_loc];
             pool_card.SetWidth(CardWidth());
             pool_card.Location = new Point(
                 x_center,
@@ -287,12 +364,12 @@ namespace CardClient.GameControls
             int player_loc,
             bool is_left)
         {
-            List<GameCard> cards = player_hand_controls[player_loc];
+            List<GameCard> game_cards = player_hand_controls[player_loc];
 
             int y_center = Height / 2 - (int) (CardHeight() / 2.0);
 
             int card_incr = (int)(Height / 2.0 / 13.0);
-            int y_loc = y_center - card_incr * cards.Count / 2;
+            int y_loc = y_center - card_incr * game_cards.Count / 2;
             int y_loc_init = y_center - card_incr * 13 / 2;
 
             int x_loc;
@@ -313,7 +390,7 @@ namespace CardClient.GameControls
             l.Text = PlayerString(player_loc);
             l.Visible = true;
 
-            foreach (GameCard gc in cards)
+            foreach (GameCard gc in game_cards)
             {
                 gc.SetWidth(CardWidth());
                 gc.Location = new Point(
@@ -324,7 +401,7 @@ namespace CardClient.GameControls
 
             x_loc += (is_left ? 1 : -1) * (int)(CardWidth() * 1.1);
 
-            GameCard pool_card = center_pool_cards[player_loc];
+            GameCard pool_card = played_game_cards[player_loc];
             pool_card.SetWidth(CardWidth());
             pool_card.Location = new Point(
                 x_loc,
@@ -349,6 +426,8 @@ namespace CardClient.GameControls
             UpdateCardVertical(
                 (player_position + 3) % player_hand_controls.Count,
                 is_left: false);
+
+            UpdateCenterCards();
         }
 
         private void GameScreen_SizeChanged(object sender, EventArgs e)

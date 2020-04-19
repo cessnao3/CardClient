@@ -67,5 +67,10 @@ namespace CardClient
         {
             (new AboutForm()).ShowDialog(this);
         }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tmrGameUpdate_Tick(null, null);
+        }
     }
 }

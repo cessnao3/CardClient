@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             this.PicCard = new System.Windows.Forms.PictureBox();
+            this.LblSpecialLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PicCard)).BeginInit();
             this.SuspendLayout();
             // 
             // PicCard
             // 
             this.PicCard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PicCard.Image = global::CardClient.Properties.Resources.card_back;
+            this.PicCard.Image = global::CardClient.Properties.Resources.card_blank;
             this.PicCard.Location = new System.Drawing.Point(0, 0);
             this.PicCard.Name = "PicCard";
             this.PicCard.Size = new System.Drawing.Size(235, 305);
@@ -44,11 +45,24 @@
             this.PicCard.TabStop = false;
             this.PicCard.Click += new System.EventHandler(this.PicCard_Click);
             // 
+            // LblSpecialLabel
+            // 
+            this.LblSpecialLabel.BackColor = System.Drawing.Color.Transparent;
+            this.LblSpecialLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LblSpecialLabel.Location = new System.Drawing.Point(0, 0);
+            this.LblSpecialLabel.Name = "LblSpecialLabel";
+            this.LblSpecialLabel.Size = new System.Drawing.Size(235, 305);
+            this.LblSpecialLabel.TabIndex = 1;
+            this.LblSpecialLabel.Text = "Text Label";
+            this.LblSpecialLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LblSpecialLabel.Click += new System.EventHandler(this.LblSpecialLabel_Click);
+            // 
             // GameCard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.LblSpecialLabel);
             this.Controls.Add(this.PicCard);
             this.Name = "GameCard";
             this.Size = new System.Drawing.Size(235, 305);
@@ -60,5 +74,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox PicCard;
+        private System.Windows.Forms.Label LblSpecialLabel;
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CardGameLibrary.GameParameters;
 using CardGameLibrary.Messages;
 
 namespace CardClient
@@ -24,7 +25,7 @@ namespace CardClient
             tmrStatusUpdate_Tick(null, null);
         }
 
-        public void UpdateStatus(CardGameLibrary.Messages.MsgLobbyStatus status)
+        public void UpdateStatus(MsgLobbyStatus status)
         {
             if (lobby_id != status.game_id) return;
 
@@ -45,7 +46,7 @@ namespace CardClient
             };
 
             bool player_is_in = false;
-            CardGameLibrary.Games.GamePlayer player = Network.GameComms.GetPlayer();
+            GamePlayer player = Network.GameComms.GetPlayer();
 
             for (int i = 0; i < Math.Min(4, status.players.Count); ++i)
             {
@@ -85,7 +86,7 @@ namespace CardClient
             });
         }
 
-        private void SendJoinRequest(CardGameLibrary.Games.LobbyPositions pos)
+        private void SendJoinRequest(LobbyPositions pos)
         {
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
@@ -117,22 +118,22 @@ namespace CardClient
 
         private void BtnNorth_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.North);
+            SendJoinRequest(LobbyPositions.North);
         }
 
         private void BtnSouth_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.South);
+            SendJoinRequest(LobbyPositions.South);
         }
 
         private void BtnEast_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.East);
+            SendJoinRequest(LobbyPositions.East);
         }
 
         private void BtnWest_Click(object sender, EventArgs e)
         {
-            SendJoinRequest(CardGameLibrary.Games.LobbyPositions.West);
+            SendJoinRequest(LobbyPositions.West);
         }
     }
 }

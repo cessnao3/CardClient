@@ -20,13 +20,24 @@ namespace CardClient.GameControls
         {
             InitializeComponent();
 
-            base_card = card;
-            UpdatePicture();
+            LblSpecialLabel.Parent = PicCard;
+            SetCard(card);
         }
 
         public void SetCard(Card c)
         {
             base_card = c;
+
+            if (c != null && c.IsSpecial())
+            {
+                LblSpecialLabel.Text = CardGameLibrary.GameParameters.GameAction.action_database[c.data].name;
+                LblSpecialLabel.Visible = true;
+            }
+            else
+            {
+                LblSpecialLabel.Visible = false;
+            }
+
             UpdatePicture();
         }
 
@@ -40,7 +51,11 @@ namespace CardClient.GameControls
         {
             Bitmap bmp_to_set;
 
-            if (base_card == null || !card_shown)
+            if (base_card != null && base_card.IsSpecial())
+            {
+                bmp_to_set = Properties.Resources.card_blank;
+            }
+            else if (base_card == null || !card_shown)
             {
                 bmp_to_set = Properties.Resources.card_back;
             }
@@ -75,7 +90,12 @@ namespace CardClient.GameControls
 
         private void PicCard_Click(object sender, EventArgs e)
         {
-            this.InvokeOnClick(this, e);
+            InvokeOnClick(this, e);
+        }
+
+        private void LblSpecialLabel_Click(object sender, EventArgs e)
+        {
+            PicCard_Click(sender, e);
         }
     }
 }

@@ -8,38 +8,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CardGameLibrary.Messages;
+using CardGameLibrary.GameParameters;
 
 namespace CardClient
 {
     public partial class MainMenu : Form
     {
-        class LobbyEntry
+        class CommonEntry
         {
             public int id { get; private set; }
+            public GameTypes game_type { get; private set; }
 
-            public LobbyEntry(int id)
+            public CommonEntry(int id, GameTypes game_type)
             {
                 this.id = id;
+                this.game_type = game_type;
             }
 
             public override string ToString()
             {
-                return string.Format("Lobby ID {0:}", id);
-            }
-        }
-
-        class GameEntry
-        {
-            public int id { get; private set; }
-
-            public GameEntry(int id)
-            {
-                this.id = id;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Games ID {0:}", id);
+                return string.Format(
+                    "{0:} ID {1:}",
+                    Enum.GetName(
+                        typeof(GameTypes),
+                        game_type),
+                    id);
             }
         }
 
@@ -119,9 +112,9 @@ namespace CardClient
                     MsgGameList game_list = (MsgGameList)msg;
 
                     ListGames.Items.Clear();
-                    foreach (int i in game_list.games)
+                    foreach (MsgGameList.ListItem i in game_list.games)
                     {
-                        GameEntry gi = new GameEntry(id: i);
+                        CommonEntry gi = new CommonEntry(id: i.id_val, game_type: (GameTypes)i.game_type);
                         ListViewItem lvi = new ListViewItem(gi.ToString())
                         {
                             Tag = gi
@@ -130,9 +123,9 @@ namespace CardClient
                     }
 
                     ListLobbies.Items.Clear();
-                    foreach (int i in game_list.lobbies)
+                    foreach (MsgGameList.ListItem i in game_list.lobbies)
                     {
-                        LobbyEntry li = new LobbyEntry(id: i);
+                        CommonEntry li = new CommonEntry(id: i.id_val, game_type: (GameTypes)i.game_type);
                         ListViewItem lvi = new ListViewItem(li.ToString())
                         {
                             Tag = li
@@ -165,15 +158,34 @@ namespace CardClient
             Application.Exit();
         }
 
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Request a lobby list
+            tmrLobbyCheck_Tick(null, null);
+        }
+
         private void newLobbyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Create the game lobby
-            Network.GameComms.SendMessage(new MsgClientRequest()
+            requestLobbyForGame(GameTypes.Hearts);
+        }
+
+        private void newEuchreLobbyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            requestLobbyForGame(GameTypes.Euchre);
+        }
+
+        private void requestLobbyForGame(GameTypes type)
+        {
+            if (type != GameTypes.Invalid)
             {
-                request = MsgClientRequest.RequestType.NewLobby,
-                game_id = -1,
-                data = (int)CardGameLibrary.Games.GameTypes.Hearts
-            });
+                // Create the game lobby
+                Network.GameComms.SendMessage(new MsgClientRequest()
+                {
+                    request = MsgClientRequest.RequestType.NewLobby,
+                    game_id = -1,
+                    data = (int)type
+                });
+            }
 
             // Request a lobby list
             tmrLobbyCheck_Tick(null, null);
@@ -192,11 +204,11 @@ namespace CardClient
 
         private void ListLobbies_DoubleClick(object sender, EventArgs e)
         {
-            LobbyEntry entry = null;
+            CommonEntry entry = null;
 
             foreach (ListViewItem lvi in ListLobbies.SelectedItems)
             {
-                entry = (LobbyEntry)lvi.Tag;
+                entry = (CommonEntry)lvi.Tag;
             }
 
             if (entry != null)
@@ -213,11 +225,11 @@ namespace CardClient
 
         private void ListGames_DoubleClick(object sender, EventArgs e)
         {
-            GameEntry entry = null;
+            CommonEntry entry = null;
 
             foreach (ListViewItem lvi in ListGames.SelectedItems)
             {
-                entry = (GameEntry)lvi.Tag;
+                entry = (CommonEntry)lvi.Tag;
             }
 
             if (entry != null)

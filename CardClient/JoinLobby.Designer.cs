@@ -122,6 +122,7 @@
             this.Controls.Add(this.BtnNorth);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "JoinLobby";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Join Lobby";
             this.ResumeLayout(false);
 
