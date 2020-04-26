@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,6 +74,15 @@ namespace CardClient
                 {
                     MessageBox.Show(this, "Unable to connect to server");
                     return;
+                }
+
+                if (chkUseSecure.Checked)
+                {
+                    if (!Network.GameComms.SetupSSL())
+                    {
+                        MessageBox.Show(this, "Unable to setup SSL connection");
+                        return;
+                    }
                 }
 
                 Network.GameComms.SendMessage(msg);

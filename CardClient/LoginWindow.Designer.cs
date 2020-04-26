@@ -36,6 +36,7 @@
             this.BtnNew = new System.Windows.Forms.Button();
             this.TxtHost = new System.Windows.Forms.TextBox();
             this.LblHost = new System.Windows.Forms.Label();
+            this.chkUseSecure = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // TxtUser
@@ -80,7 +81,7 @@
             // BtnLogin
             // 
             this.BtnLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnLogin.Location = new System.Drawing.Point(174, 100);
+            this.BtnLogin.Location = new System.Drawing.Point(174, 116);
             this.BtnLogin.Name = "BtnLogin";
             this.BtnLogin.Size = new System.Drawing.Size(75, 23);
             this.BtnLogin.TabIndex = 2;
@@ -91,7 +92,7 @@
             // BtnNew
             // 
             this.BtnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnNew.Location = new System.Drawing.Point(12, 100);
+            this.BtnNew.Location = new System.Drawing.Point(12, 116);
             this.BtnNew.Name = "BtnNew";
             this.BtnNew.Size = new System.Drawing.Size(75, 23);
             this.BtnNew.TabIndex = 3;
@@ -118,11 +119,24 @@
             this.LblHost.TabIndex = 7;
             this.LblHost.Text = "Host";
             // 
+            // chkUseSecure
+            // 
+            this.chkUseSecure.AutoSize = true;
+            this.chkUseSecure.Checked = true;
+            this.chkUseSecure.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseSecure.Location = new System.Drawing.Point(15, 90);
+            this.chkUseSecure.Name = "chkUseSecure";
+            this.chkUseSecure.Size = new System.Drawing.Size(139, 17);
+            this.chkUseSecure.TabIndex = 8;
+            this.chkUseSecure.Text = "Use Secure Connection";
+            this.chkUseSecure.UseVisualStyleBackColor = true;
+            // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(261, 135);
+            this.ClientSize = new System.Drawing.Size(261, 151);
+            this.Controls.Add(this.chkUseSecure);
             this.Controls.Add(this.LblHost);
             this.Controls.Add(this.TxtHost);
             this.Controls.Add(this.BtnNew);
@@ -152,5 +166,6 @@
         private System.Windows.Forms.Button BtnNew;
         private System.Windows.Forms.TextBox TxtHost;
         private System.Windows.Forms.Label LblHost;
+        private System.Windows.Forms.CheckBox chkUseSecure;
     }
 }

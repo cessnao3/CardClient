@@ -148,7 +148,6 @@
             // 
             // tmrLobbyCheck
             // 
-            this.tmrLobbyCheck.Enabled = true;
             this.tmrLobbyCheck.Interval = 10000;
             this.tmrLobbyCheck.Tick += new System.EventHandler(this.tmrLobbyCheck_Tick);
             // 
