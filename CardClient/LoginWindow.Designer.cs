@@ -122,8 +122,6 @@
             // chkUseSecure
             // 
             this.chkUseSecure.AutoSize = true;
-            this.chkUseSecure.Checked = true;
-            this.chkUseSecure.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseSecure.Location = new System.Drawing.Point(15, 90);
             this.chkUseSecure.Name = "chkUseSecure";
             this.chkUseSecure.Size = new System.Drawing.Size(139, 17);
