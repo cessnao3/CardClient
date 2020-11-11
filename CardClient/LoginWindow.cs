@@ -47,9 +47,9 @@ namespace CardClient
                 output_password = password;
 
                 MsgLogin msg = new MsgLogin();
-                msg.action = (is_new_user) ? MsgLogin.ActionType.NewUser : MsgLogin.ActionType.LoginUser;
-                msg.username = username;
-                msg.password_hash = password;
+                msg.Action = (is_new_user) ? MsgLogin.ActionType.NewUser : MsgLogin.ActionType.LoginUser;
+                msg.Username = username;
+                msg.PasswordHash = password;
 
                 using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
                 {
@@ -63,7 +63,7 @@ namespace CardClient
                     {
                         sb.Append(hash_bytes[i].ToString("x2"));
                     }
-                    msg.password_hash = sb.ToString();
+                    msg.PasswordHash = sb.ToString();
                 }
 
                 try
@@ -108,9 +108,9 @@ namespace CardClient
                     }
                 }
 
-                if (msg_response != null && msg_response.code == ResponseCodes.OK)
+                if (msg_response != null && msg_response.ResponseCode == ResponseCodes.OK)
                 {
-                    Network.GameComms.SetPlayer(msg_response.user);
+                    Network.GameComms.SetPlayer(msg_response.User);
                     DialogResult = DialogResult.OK;
                     Close();
                 }

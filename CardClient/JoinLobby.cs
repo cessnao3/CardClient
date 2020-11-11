@@ -27,7 +27,7 @@ namespace CardClient
 
         public void UpdateStatus(MsgLobbyStatus status)
         {
-            if (lobby_id != status.game_id) return;
+            if (lobby_id != status.GameID) return;
 
             string[] dir_string = new string[]
             {
@@ -48,17 +48,17 @@ namespace CardClient
             bool player_is_in = false;
             GamePlayer player = Network.GameComms.GetPlayer();
 
-            for (int i = 0; i < Math.Min(4, status.players.Count); ++i)
+            for (int i = 0; i < Math.Min(4, status.Players.Count); ++i)
             {
-                if (player.Equals(status.players[i]))
+                if (player.Equals(status.Players[i]))
                 {
                     player_is_in = true;
                 }
             }
 
-            for (int i = 0; i < Math.Min(4, status.players.Count); ++i)
+            for (int i = 0; i < Math.Min(4, status.Players.Count); ++i)
             {
-                if (status.players[i] == null)
+                if (status.Players[i] == null)
                 {
                     buttons[i].Text = dir_string[i];
                     buttons[i].Enabled = !player_is_in;
@@ -69,7 +69,7 @@ namespace CardClient
                     buttons[i].Text = string.Format(
                         "{0:} {1:}",
                         dir_string[i].Substring(0, 1),
-                        status.players[i].CapitalizedName().Substring(0, Math.Min(3, status.players[i].CapitalizedName().Length)));
+                        status.Players[i].CapitalizedName().Substring(0, Math.Min(3, status.Players[i].CapitalizedName().Length)));
                 }
             }
 
@@ -80,9 +80,9 @@ namespace CardClient
         {
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = MsgClientRequest.RequestType.LobbyStatus,
-                game_id = lobby_id,
-                data = -1
+                Request = MsgClientRequest.RequestType.LobbyStatus,
+                GameID = lobby_id,
+                Data = -1
             });
         }
 
@@ -90,9 +90,9 @@ namespace CardClient
         {
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = MsgClientRequest.RequestType.JoinLobby,
-                game_id = lobby_id,
-                data = (int)pos
+                Request = MsgClientRequest.RequestType.JoinLobby,
+                GameID = lobby_id,
+                Data = (int)pos
             });
         }
 
@@ -100,9 +100,9 @@ namespace CardClient
         {
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = MsgClientRequest.RequestType.LeaveLobby,
-                game_id = lobby_id,
-                data = -1
+                Request = MsgClientRequest.RequestType.LeaveLobby,
+                GameID = lobby_id,
+                Data = -1
             });
         }
 

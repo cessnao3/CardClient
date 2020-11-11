@@ -36,21 +36,21 @@ namespace CardClient
         {
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                game_id = game_id,
-                request = MsgClientRequest.RequestType.GameStatus
+                GameID = game_id,
+                Request = MsgClientRequest.RequestType.GameStatus
             });
         }
 
         public void UpdateGame(MsgGameStatus status)
         {
             // Check that the ID values
-            if (status.game_id != game_id) return;
+            if (status.GameID != game_id) return;
 
             // Update the status window
             gameScreen.UpdateFromStatus(status);
-            if (status.current_game_status != null && status.current_game_status.Length > 0)
+            if (status.CurrentGameStatus != null && status.CurrentGameStatus.Length > 0)
             {
-                toolStripStatus.Text = "Status: " + status.current_game_status;
+                toolStripStatus.Text = "Status: " + status.CurrentGameStatus;
             }
             else
             {

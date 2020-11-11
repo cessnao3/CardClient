@@ -78,29 +78,29 @@ namespace CardClient.GameControls
 
         public void UpdateFromStatus(MsgGameStatus status)
         {
-            player_hands = status.hands;
-            center_cards = status.center_action_cards;
+            player_hands = status.Hands;
+            center_cards = status.CenterActionCards;
 
             player_position = -1;
-            for (int i = 0; i < status.players.Count; ++i)
+            for (int i = 0; i < status.Players.Count; ++i)
             {
-                if (status.players[i].Equals(Network.GameComms.GetPlayer()))
+                if (status.Players[i].Equals(Network.GameComms.GetPlayer()))
                 {
                     player_position = i;
                     break;
                 }
             }
 
-            for (int i = 0; i < status.played_cards_by_player.Count; ++i)
+            for (int i = 0; i < status.PlayedCardsByPlayer.Count; ++i)
             {
-                played_game_cards[i].SetCard(c: status.played_cards_by_player[i]);
+                played_game_cards[i].SetCard(c: status.PlayedCardsByPlayer[i]);
             }
 
-            players = status.players;
+            players = status.Players;
 
-            current_player_turn = status.current_player;
+            current_player_turn = status.CurrentPlayer;
 
-            scores = status.scores;
+            scores = status.Scores;
 
             SyncHandCards();
             SyncCenterCards();
@@ -236,9 +236,9 @@ namespace CardClient.GameControls
                     {
                         Network.GameComms.SendMessage(new MsgGamePlay()
                         {
-                            card = gc.base_card,
-                            game_id = game_id,
-                            player = players[player_position]
+                            Card = gc.base_card,
+                            GameID = game_id,
+                            Player = players[player_position]
                         });
                         Console.WriteLine(string.Format(
                             "Card {0:s} clicked",

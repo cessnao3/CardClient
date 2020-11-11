@@ -112,9 +112,9 @@ namespace CardClient
                     MsgGameList game_list = (MsgGameList)msg;
 
                     ListGames.Items.Clear();
-                    foreach (MsgGameList.ListItem i in game_list.games)
+                    foreach (MsgGameList.ListItem i in game_list.Games)
                     {
-                        CommonEntry gi = new CommonEntry(id: i.id_val, game_type: (GameTypes)i.game_type);
+                        CommonEntry gi = new CommonEntry(id: i.GameIDValue, game_type: (GameTypes)i.GameType);
                         ListViewItem lvi = new ListViewItem(gi.ToString())
                         {
                             Tag = gi
@@ -123,9 +123,9 @@ namespace CardClient
                     }
 
                     ListLobbies.Items.Clear();
-                    foreach (MsgGameList.ListItem i in game_list.lobbies)
+                    foreach (MsgGameList.ListItem i in game_list.Lobbies)
                     {
-                        CommonEntry li = new CommonEntry(id: i.id_val, game_type: (GameTypes)i.game_type);
+                        CommonEntry li = new CommonEntry(id: i.GameIDValue, game_type: (GameTypes)i.GameType);
                         ListViewItem lvi = new ListViewItem(li.ToString())
                         {
                             Tag = li
@@ -181,9 +181,9 @@ namespace CardClient
                 // Create the game lobby
                 Network.GameComms.SendMessage(new MsgClientRequest()
                 {
-                    request = MsgClientRequest.RequestType.NewLobby,
-                    game_id = -1,
-                    data = (int)type
+                    Request = MsgClientRequest.RequestType.NewLobby,
+                    GameID = -1,
+                    Data = (int)type
                 });
             }
 
@@ -196,9 +196,9 @@ namespace CardClient
             // Send the message to request lobby status
             Network.GameComms.SendMessage(new MsgClientRequest()
             {
-                request = MsgClientRequest.RequestType.AvailableGames,
-                data = -1,
-                game_id = -1
+                Request = MsgClientRequest.RequestType.AvailableGames,
+                Data = -1,
+                GameID = -1
             });
         }
 
